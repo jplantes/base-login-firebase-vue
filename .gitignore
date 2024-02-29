@@ -28,3 +28,6 @@ coverage
 *.sw?
 
 *.tsbuildinfo
+
+# archivos de configuración
+/src/firebase.conf.ts

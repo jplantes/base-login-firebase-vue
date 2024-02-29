@@ -49,7 +49,7 @@ const router = createRouter({
           path: '',
           redirect: { name: 'singin' },
         }
-      ]
+      ],
     }
   ]
 })
@@ -59,25 +59,22 @@ const getCurrenteUser = () => {
     const unsubscribe = onAuthStateChanged(
       getAuth(),
       user => {
-      unsubscribe()
-      resolve(user)
-    },
-    reject)
+        unsubscribe()
+        resolve(user)
+      },
+      reject
+    )
   })
 }
 
 router.beforeEach(async (to, from, next) => {
-
   if( to.matched.some( record => record.meta.requiresAuth ) ){
-    if( await getCurrenteUser() ){
-      next()
-    }else{
-      next('/auth/singin')
-    }
+    // Si el usuario no esta autenticado lo redirigimos a la pagina de autenticacion 
+    await getCurrenteUser() ? next() : next('/auth/singin')
   } else {
-    next()
+    // Si el usuario esta autenticado y quiere ir a la pagina de autenticacion lo redirigimos al home
+    (await getCurrenteUser() && to.path.includes('/auth')) ? next('/') : next()
   }
-
 })
 
 

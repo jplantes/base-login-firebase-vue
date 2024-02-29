@@ -6,7 +6,7 @@
   </div>
 
   <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-    <div class="space-y-6">
+    <form class="space-y-6" @submit.prevent="iniciarSession">
       <div>
         <label for="email" class="block text-sm font-medium leading-6 text-gray-900">Correo electronico</label>
         <div class="mt-2">
@@ -42,12 +42,12 @@
 
       <div>
         <button
-          @click="iniciarSession"
+          type="submit"
           class="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
           Ingresar
         </button>
       </div>
-    </div>
+    </form>
 
     <p class="mt-10 text-center text-sm text-gray-500">
       No tenes cuenta
@@ -59,25 +59,9 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
-import { getAuth, signInWithEmailAndPassword } from 'firebase/auth'
-import { useRouter } from 'vue-router';
+import { authComposable } from '../composables/authComposable'
 
-const router = useRouter()
-
-const email = ref('')
-const password = ref('')
-
-
-const iniciarSession = async () => {
-  try {
-    const usuario = await signInWithEmailAndPassword(getAuth(), email.value, password.value)
-    console.log( 'Ingreso' )
-    router.push('/')
-  } catch (error) {
-    console.log(error)
-  }
-}
+const { email, password, iniciarSession} = authComposable()
 </script>
 
 <style scoped></style>

@@ -6,7 +6,7 @@
   </div>
 
   <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-    <div class="space-y-6">
+    <form @submit.prevent="register" class="space-y-6">
       <div>
         <label for="email" class="block text-sm font-medium leading-6 text-gray-900">Correo electronico</label>
         <div class="mt-2">
@@ -30,12 +30,13 @@
       </div>
 
       <div>
-        <button @click="register"
+        <button
+          type="submit"
           class="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
           Registrarme
         </button>
       </div>
-    </div>
+    </form>
 
     <p class="mt-10 text-center text-sm text-gray-500">
       Si ya tenes cuenta
@@ -47,26 +48,9 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
-import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth'
-import { useRouter } from 'vue-router';
+import { authComposable } from '../composables/authComposable'
 
-const router = useRouter()
-
-const email = ref('')
-const password = ref('')
-
-
-const register = async () => {
-  try {
-    const usuario = await createUserWithEmailAndPassword(getAuth(), email.value, password.value)
-    console.log(usuario)
-    router.push({ name: 'home' })
-  } catch (error) {
-    console.log(error)
-  }
-}
-
+const { email, password, register } = authComposable()
 </script>
 
 <style scoped></style>
